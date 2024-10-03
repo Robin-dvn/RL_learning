@@ -29,6 +29,7 @@ def train_TD0(nb_ep):
                 s = news
             history["rmse_alpha"][alpha].append(float(rmse(vtrue[1:-1],v[1:-1])))
         env.close()
+        print(v)
     return history
 
 
@@ -54,6 +55,6 @@ def main(nb_ep):
     plt.show()
     return his
 
-his = main(15000)
+his = main(200)
 
     
