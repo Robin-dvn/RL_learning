@@ -10,10 +10,10 @@ def phi_frame(actual_frame,previous_frame):
 
 def phi(dqueu,agent_history_length):
 
-    stacked_images = np.zeros(shape=(84,84,agent_history_length))
+    stacked_images = np.zeros(shape=(agent_history_length,84,84))
     for i in range(agent_history_length):
         act_frame = dqueu[i+1]
         prev_frame = dqueu[i]
         image = phi_frame(actual_frame=act_frame,previous_frame=prev_frame)
-        stacked_images[:,:,i] = image
+        stacked_images[i] = image
     return stacked_images
