@@ -8,10 +8,10 @@ def phi_frame(actual_frame,previous_frame):
 
     return resized_im
 
-def phi(dqueu):
-    m = len(dqueu)-1
-    stacked_images = np.zeros(shape=(84,84,m))
-    for i in range(m):
+def phi(dqueu,agent_history_length):
+
+    stacked_images = np.zeros(shape=(84,84,agent_history_length))
+    for i in range(agent_history_length):
         act_frame = dqueu[i+1]
         prev_frame = dqueu[i]
         image = phi_frame(actual_frame=act_frame,previous_frame=prev_frame)
