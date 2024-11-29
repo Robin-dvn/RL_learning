@@ -11,13 +11,38 @@ MIN_BUFFER_SIZE = 50000
 REPLAY_BUFFER_SIZE = 1000000
 BATCH_SIZE = 32
 AGENT_HISTORY_LENGTH = 4
-TARGET_NETWORK_UPDATE_FREQUENCY = 10000
+TARGET_UPDATE_FREQUENCY = 10000
 GAMMA = 0.99
 ACTION_REPEAT = 4
 UPDATE_FREQUENCY = 4
 LR = 0.00025
 GRAD_MOMENTUM = 0.95
 SQR_GRAD_MOMENTUM = 0.95
+MIN_SQR_GRAD = 0.01
+EPS_START = 1
+EPS_END = 0.1
+EPS_MAX_FRAME = 1000000
+NOOP_MAX = 30
+
+class Qnetwort(nn.Module):
+    def __init__(self, env: gym.Env):
+        super().__init__()
+        seq = nn.Sequential(
+            nn.Conv2d(in_channels=4,out_channels=32,kernel_size=8,stride=4),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=32,out_channels=64,kernel_size=4,stride=2),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=64,out_channels=64,kernel_size=3,stride=1),
+            nn.ReLU(),
+            nn.Linear(512,512),
+            nn.ReLU(),
+            nn.Linear(512,env.action_space.shape),
+        )
+    def forward(self,x):
+        return self.seq(x)
+    def act(self,obs):
+        pass
+
 
 
 gym.register_envs(ale_py)
