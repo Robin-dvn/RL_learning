@@ -1,0 +1,16 @@
+{"time":"2024-11-30T22:44:56.6989564+09:00","level":"INFO","msg":"using version","core version":"0.18.7"}
+{"time":"2024-11-30T22:44:56.6989564+09:00","level":"INFO","msg":"created symlink","path":"D:\\Projets git\\RL_learning\\src\\wandb\\run-20241130_224456-mqlaqsco\\logs\\debug-core.log"}
+{"time":"2024-11-30T22:44:57.8178684+09:00","level":"INFO","msg":"created new stream","id":"mqlaqsco"}
+{"time":"2024-11-30T22:44:57.8180167+09:00","level":"INFO","msg":"stream: started","id":"mqlaqsco"}
+{"time":"2024-11-30T22:44:57.8180167+09:00","level":"INFO","msg":"writer: Do: started","stream_id":"mqlaqsco"}
+{"time":"2024-11-30T22:44:57.8180167+09:00","level":"INFO","msg":"handler: started","stream_id":"mqlaqsco"}
+{"time":"2024-11-30T22:44:57.8185426+09:00","level":"INFO","msg":"sender: started","stream_id":"mqlaqsco"}
+{"time":"2024-11-30T22:44:58.189631+09:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-11-30T22:45:29.2558921+09:00","level":"INFO","msg":"stream: closing","id":"mqlaqsco"}
+{"time":"2024-11-30T22:45:29.2558921+09:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-11-30T22:45:29.2582327+09:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-11-30T22:45:30.4100151+09:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-11-30T22:45:30.7204564+09:00","level":"INFO","msg":"handler: closed","stream_id":"mqlaqsco"}
+{"time":"2024-11-30T22:45:30.7206099+09:00","level":"INFO","msg":"writer: Close: closed","stream_id":"mqlaqsco"}
+{"time":"2024-11-30T22:45:30.7206099+09:00","level":"INFO","msg":"sender: closed","stream_id":"mqlaqsco"}
+{"time":"2024-11-30T22:45:30.7209523+09:00","level":"INFO","msg":"stream: closed","id":"mqlaqsco"}

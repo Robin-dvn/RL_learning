@@ -1,0 +1,16 @@
+{"time":"2024-11-30T22:46:01.1745344+09:00","level":"INFO","msg":"using version","core version":"0.18.7"}
+{"time":"2024-11-30T22:46:01.1745344+09:00","level":"INFO","msg":"created symlink","path":"D:\\Projets git\\RL_learning\\src\\wandb\\run-20241130_224601-hoat4fnq\\logs\\debug-core.log"}
+{"time":"2024-11-30T22:46:01.9913839+09:00","level":"INFO","msg":"created new stream","id":"hoat4fnq"}
+{"time":"2024-11-30T22:46:01.9913839+09:00","level":"INFO","msg":"stream: started","id":"hoat4fnq"}
+{"time":"2024-11-30T22:46:01.9913839+09:00","level":"INFO","msg":"writer: Do: started","stream_id":"hoat4fnq"}
+{"time":"2024-11-30T22:46:01.9913839+09:00","level":"INFO","msg":"handler: started","stream_id":"hoat4fnq"}
+{"time":"2024-11-30T22:46:01.9913839+09:00","level":"INFO","msg":"sender: started","stream_id":"hoat4fnq"}
+{"time":"2024-11-30T22:46:02.3942393+09:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-11-30T22:47:30.1370819+09:00","level":"INFO","msg":"stream: closing","id":"hoat4fnq"}
+{"time":"2024-11-30T22:47:30.1370819+09:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-11-30T22:47:30.1383144+09:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-11-30T22:47:31.185899+09:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-11-30T22:47:31.5066049+09:00","level":"INFO","msg":"handler: closed","stream_id":"hoat4fnq"}
+{"time":"2024-11-30T22:47:31.5067907+09:00","level":"INFO","msg":"sender: closed","stream_id":"hoat4fnq"}
+{"time":"2024-11-30T22:47:31.5067907+09:00","level":"INFO","msg":"writer: Close: closed","stream_id":"hoat4fnq"}
+{"time":"2024-11-30T22:47:31.5073538+09:00","level":"INFO","msg":"stream: closed","id":"hoat4fnq"}

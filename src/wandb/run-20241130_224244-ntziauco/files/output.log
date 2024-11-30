@@ -1,0 +1,10 @@
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 20000/20000 [00:20<00:00, 962.08it/s]
+[INFO] INitialisation du Replay Buffer de taille 20000 terminé en 0:00:20.800000 secondes
+[INFO] Début de l'entrainement pour 1000 frames
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [00:07<00:00, 127.35it/s]
+C:\Users\testa\.pyenv\pyenv-win\versions\3.11.0\Lib\site-packages\numpy\core\fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+C:\Users\testa\.pyenv\pyenv-win\versions\3.11.0\Lib\site-packages\numpy\core\_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+[INFO] Entrainement terminé et l'average reward sur les 100 derniers episode est : nan
+deque([], maxlen=100)

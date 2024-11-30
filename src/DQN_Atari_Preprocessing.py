@@ -3,7 +3,7 @@ import cv2
 
 def phi_frame(actual_frame,previous_frame):
     max_frame = np.maximum(actual_frame,previous_frame)
-    image_gray = cv2.cvtColor(max_frame,cv2.COLOR_BGR2GRAY)
+    image_gray = cv2.cvtColor(actual_frame,cv2.COLOR_BGR2GRAY)
     resized_im = cv2.resize(image_gray,(84,84),interpolation=cv2.INTER_LINEAR)
 
     return resized_im

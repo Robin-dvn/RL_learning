@@ -12,11 +12,11 @@ class Qnetwort(nn.Module):
     def __init__(self, env: gym.Env):
         super().__init__()
         self.seq = nn.Sequential(
-            nn.Conv2d(in_channels=4,out_channels=32,kernel_size=8,stride=4),
+            nn.Conv2d(in_channels=4,out_channels=32,kernel_size=(8,8),stride=(4,4)),
             nn.ReLU(),
-            nn.Conv2d(in_channels=32,out_channels=64,kernel_size=4,stride=2),
+            nn.Conv2d(in_channels=32,out_channels=64,kernel_size=(4,4),stride=(2,2)),
             nn.ReLU(),
-            nn.Conv2d(in_channels=64,out_channels=64,kernel_size=3,stride=1),
+            nn.Conv2d(in_channels=64,out_channels=64,kernel_size=(3,3),stride=(1,1)),
             nn.ReLU(),
             nn.Flatten(),
             nn.Linear(64*7*7,512),
@@ -28,15 +28,16 @@ class Qnetwort(nn.Module):
     def act(self,obs):
         obs_t = torch.as_tensor(obs,dtype=torch.float32).unsqueeze(0)
         q_values = self(obs_t)
+        print(q_values)
         max_q_index = torch.argmax(q_values)
         action = max_q_index.detach().item()
         return action
 
 env = gym.make('ALE/Breakout-v5',render_mode = "human")
 qNet = Qnetwort(env)
-qNet.load_state_dict(torch.load("Qnetworkstatedict.pth",map_location=torch.device('cpu')))
+qNet.load_state_dict(torch.load("Qnetworkstatedict.pth",map_location=torch.device('cpu'),weights_only=True))
 last_m_images = deque(maxlen=5)
-
+obs,info = env.reset()
 for _ in range(1000):
     while len(last_m_images) <= 4:
         a = env.action_space.sample()

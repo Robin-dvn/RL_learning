@@ -1,0 +1,16 @@
+{"time":"2024-11-30T23:32:46.2345825+09:00","level":"INFO","msg":"using version","core version":"0.18.7"}
+{"time":"2024-11-30T23:32:46.2345825+09:00","level":"INFO","msg":"created symlink","path":"D:\\Projets git\\RL_learning\\src\\wandb\\run-20241130_233246-nxey4nhe\\logs\\debug-core.log"}
+{"time":"2024-11-30T23:32:47.3617809+09:00","level":"INFO","msg":"created new stream","id":"nxey4nhe"}
+{"time":"2024-11-30T23:32:47.3617809+09:00","level":"INFO","msg":"stream: started","id":"nxey4nhe"}
+{"time":"2024-11-30T23:32:47.3617809+09:00","level":"INFO","msg":"handler: started","stream_id":"nxey4nhe"}
+{"time":"2024-11-30T23:32:47.3617809+09:00","level":"INFO","msg":"writer: Do: started","stream_id":"nxey4nhe"}
+{"time":"2024-11-30T23:32:47.3617809+09:00","level":"INFO","msg":"sender: started","stream_id":"nxey4nhe"}
+{"time":"2024-11-30T23:32:47.7755397+09:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-11-30T23:34:21.9801152+09:00","level":"INFO","msg":"stream: closing","id":"nxey4nhe"}
+{"time":"2024-11-30T23:34:21.9806302+09:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-11-30T23:34:21.9823457+09:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-11-30T23:34:23.1435704+09:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-11-30T23:34:23.4155434+09:00","level":"INFO","msg":"handler: closed","stream_id":"nxey4nhe"}
+{"time":"2024-11-30T23:34:23.4155434+09:00","level":"INFO","msg":"writer: Close: closed","stream_id":"nxey4nhe"}
+{"time":"2024-11-30T23:34:23.4155434+09:00","level":"INFO","msg":"sender: closed","stream_id":"nxey4nhe"}
+{"time":"2024-11-30T23:34:23.4155434+09:00","level":"INFO","msg":"stream: closed","id":"nxey4nhe"}

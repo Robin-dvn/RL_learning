@@ -13,21 +13,34 @@ from tqdm import tqdm
 from time import time
 from datetime import timedelta
 import gc
+import wandb
+
+wandb.init(
+    # set the wandb project where this run will be logged
+    project="DQN-Atari-Breakout",
+
+    # track hyperparameters and run metadata
+    config={
+    "learning_rate": 0.001,
+    "architecture": "CNN",
+    "frames": 10000,
+    }
+)
 
 MIN_BUFFER_SIZE = 20000
 REPLAY_BUFFER_SIZE = 20000
 BATCH_SIZE = 32
 AGENT_HISTORY_LENGTH = 4
-TARGET_UPDATE_FREQUENCY = 10000
+TARGET_UPDATE_FREQUENCY = 1000
 GAMMA = 0.99
 ACTION_REPEAT = 4
 UPDATE_FREQUENCY = 4
 LR = 0.00025
 EPS_START = 1
 EPS_END = 0.1
-EPS_MAX_FRAME = 1000000
+EPS_MAX_FRAME = 10000
 NOOP_MAX = 30
-NB_FRAME_TRAIN = 1000000
+NB_FRAME_TRAIN = 10000
 
 device = "cuda" if torch.cuda.is_available()  else "cpu"
 
@@ -38,11 +51,11 @@ class Qnetwort(nn.Module):
     def __init__(self, env: gym.Env):
         super().__init__()
         self.seq = nn.Sequential(
-            nn.Conv2d(in_channels=4,out_channels=32,kernel_size=8,stride=4),
+            nn.Conv2d(in_channels=4,out_channels=32,kernel_size=(8,8),stride=(4,4)),
             nn.ReLU(),
-            nn.Conv2d(in_channels=32,out_channels=64,kernel_size=4,stride=2),
+            nn.Conv2d(in_channels=32,out_channels=64,kernel_size=(4,4),stride=(2,2)),
             nn.ReLU(),
-            nn.Conv2d(in_channels=64,out_channels=64,kernel_size=3,stride=1),
+            nn.Conv2d(in_channels=64,out_channels=64,kernel_size=(3,3),stride=(1,1)),
             nn.ReLU(),
             nn.Flatten(),
             nn.Linear(64*7*7,512),
@@ -75,13 +88,20 @@ last_m_images = deque(maxlen=AGENT_HISTORY_LENGTH+1)
 last_m_images.append(obs)
 
 init_start_time = time()
+noop_compteur = 0
 for _ in tqdm(range(MIN_BUFFER_SIZE)):
     while len(last_m_images) <= AGENT_HISTORY_LENGTH:
         a = env.action_space.sample()
         obs,r,ter,trun,info = env.step(a)
         last_m_images.append(obs)
-    
-    a = env.action_space.sample()
+    a = 0
+    if noop_compteur == 30:
+
+        while a == 0:
+            a = env.action_space.sample()
+    else:
+        a = env.action_space.sample()
+        if a == 0 : noop_compteur+=1
     
 
     new_obs,r,ter,trun,info = env.step(a)
@@ -102,6 +122,8 @@ for _ in tqdm(range(MIN_BUFFER_SIZE)):
 
 
     if done:
+        wandb.log({"noop":noop_compteur})
+        noop_compteur=0
         obs,info = env.reset()
         last_m_images.clear()
         last_m_images.append(obs)
@@ -113,8 +135,9 @@ print(f"[INFO] INitialisation du Replay Buffer de taille {MIN_BUFFER_SIZE} termi
 
 print(f"[INFO] Début de l'entrainement pour {NB_FRAME_TRAIN} frames")
 
-optimizer = optim.RMSprop(online_net.parameters(),lr=0.001) 
+optimizer = optim.RMSprop(online_net.parameters(),lr=0.0001) 
 cumul_reward = 0
+criterion = nn.MSELoss()
 
 for frame in tqdm(range(NB_FRAME_TRAIN)):
     while len(last_m_images) <= AGENT_HISTORY_LENGTH:
@@ -149,6 +172,7 @@ for frame in tqdm(range(NB_FRAME_TRAIN)):
     replay_buffer.append(transition)
     obs = new_obs
     if done:
+        wandb.log({"reward":cumul_reward})
         reward_buffer.append(cumul_reward)
         obs,info = env.reset()
         last_m_images.clear()
@@ -182,7 +206,8 @@ for frame in tqdm(range(NB_FRAME_TRAIN)):
         targets = rewards_t + GAMMA * max_target_values * (1-dones_t)
 
         ### Loss ###
-        loss = nn.functional.smooth_l1_loss(action_online_values,targets)
+        loss = criterion(action_online_values,targets)
+        wandb.log({"loss": loss.item()})
 
         ### Optimizer ###
         optimizer.zero_grad()
