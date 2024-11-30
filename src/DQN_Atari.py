@@ -12,9 +12,10 @@ import numpy as np
 from tqdm import tqdm
 from time import time
 from datetime import timedelta
+import gc
 
-MIN_BUFFER_SIZE = 500
-REPLAY_BUFFER_SIZE = 1000000
+MIN_BUFFER_SIZE = 20000
+REPLAY_BUFFER_SIZE = 20000
 BATCH_SIZE = 32
 AGENT_HISTORY_LENGTH = 4
 TARGET_UPDATE_FREQUENCY = 10000
@@ -26,7 +27,7 @@ EPS_START = 1
 EPS_END = 0.1
 EPS_MAX_FRAME = 1000000
 NOOP_MAX = 30
-NB_FRAME_TRAIN = 1000
+NB_FRAME_TRAIN = 1000000
 
 device = "cuda" if torch.cuda.is_available()  else "cpu"
 
@@ -51,7 +52,7 @@ class Qnetwort(nn.Module):
     def forward(self,x):
         return self.seq(x)
     def act(self,obs):
-        obs_t = torch.as_tensor(obs,dtype=torch.float32).unsqueeze(0)
+        obs_t = torch.as_tensor(obs,dtype=torch.float32).unsqueeze(0).to(device)
         q_values = self(obs_t)
         max_q_index = torch.argmax(q_values)
         action = max_q_index.detach().item()
@@ -143,6 +144,8 @@ for frame in tqdm(range(NB_FRAME_TRAIN)):
     new_obs_stacked[-1] = phi_frame(new_obs,obs)
 
     transition = (obs_stacked,a,r,new_obs_stacked,done)
+    # removed_item = re.popleft()  # L'élément à gauche est retiré
+    # del removed_item 
     replay_buffer.append(transition)
     obs = new_obs
     if done:
@@ -185,7 +188,20 @@ for frame in tqdm(range(NB_FRAME_TRAIN)):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-    
+        del observations_t
+        del actions_t
+        del rewards_t
+        del new_observations_t
+        del dones_t
+        del observations
+        del actions
+        del rewards
+        del new_observations
+        del dones
+
+        torch.cuda.empty_cache()
+    if frame % 500 == 0:
+        gc.collect()
     ### TARGET UPDATE ###
     if (frame//4) % TARGET_UPDATE_FREQUENCY == 0:
         target_net.load_state_dict(online_net.state_dict())
@@ -194,6 +210,8 @@ for frame in tqdm(range(NB_FRAME_TRAIN)):
     
 print(f"[INFO] Entrainement terminé et l'average reward sur les 100 derniers episode est : {np.mean(reward_buffer)}")
 print(reward_buffer)
+
+torch.save(online_net.state_dict,"Qnetworkstatedict.pth")
 
 
 # print(env.observation_space.shape)
