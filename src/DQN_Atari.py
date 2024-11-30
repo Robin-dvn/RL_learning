@@ -211,7 +211,7 @@ for frame in tqdm(range(NB_FRAME_TRAIN)):
 print(f"[INFO] Entrainement terminé et l'average reward sur les 100 derniers episode est : {np.mean(reward_buffer)}")
 print(reward_buffer)
 
-torch.save(online_net.state_dict,"Qnetworkstatedict.pth")
+torch.save(online_net.state_dict(),"Qnetworkstatedict.pth")
 
 
 # print(env.observation_space.shape)
