@@ -22,14 +22,13 @@ GAMMA = 0.99
 ACTION_REPEAT = 4
 UPDATE_FREQUENCY = 4
 LR = 0.00025
-GRAD_MOMENTUM = 0.95
-SQR_GRAD_MOMENTUM = 0.95
-MIN_SQR_GRAD = 0.01
 EPS_START = 1
 EPS_END = 0.1
 EPS_MAX_FRAME = 1000000
 NOOP_MAX = 30
 NB_FRAME_TRAIN = 1000
+
+device = "cuda" if torch.cuda.is_available()  else "cpu"
 
 gym.register_envs(ale_py)
 
@@ -62,8 +61,9 @@ env = gym.make("ALE/Breakout-v5",frameskip=ACTION_REPEAT,repeat_action_probabili
 
 obs,info = env.reset()
 
-online_net = Qnetwort(env)
-target_net = Qnetwort(env)
+online_net = Qnetwort(env).to(device)
+target_net = Qnetwort(env).to(device)
+
 target_net.load_state_dict(online_net.state_dict())
 
 replay_buffer = deque(maxlen=REPLAY_BUFFER_SIZE)
@@ -163,11 +163,11 @@ for frame in tqdm(range(NB_FRAME_TRAIN)):
         dones = np.asarray([t[4] for t in transition_mb])
 
         ### Convert to tensors/dimensions ###
-        observations_t = torch.as_tensor(observations,dtype=torch.float32)
-        actions_t = torch.as_tensor(actions,dtype=torch.int64).unsqueeze(-1) # pour passer de [1 2 3] à [[1] [2] [3]] (3) -> (3,1)
-        rewards_t = torch.as_tensor(rewards,dtype=torch.float32).unsqueeze(-1)
-        new_observations_t = torch.as_tensor(new_observations,dtype=torch.float32)
-        dones_t = torch.as_tensor(dones,dtype=torch.float32).unsqueeze(-1)
+        observations_t = torch.as_tensor(observations,dtype=torch.float32).to(device)
+        actions_t = torch.as_tensor(actions,dtype=torch.int64).unsqueeze(-1).to(device) # pour passer de [1 2 3] à [[1] [2] [3]] (3) -> (3,1)
+        rewards_t = torch.as_tensor(rewards,dtype=torch.float32).unsqueeze(-1).to(device)
+        new_observations_t = torch.as_tensor(new_observations,dtype=torch.float32).to(device)
+        dones_t = torch.as_tensor(dones,dtype=torch.float32).unsqueeze(-1).to(device)
 
         ### Compute Targets ###
         target_q_values = target_net(new_observations_t)
