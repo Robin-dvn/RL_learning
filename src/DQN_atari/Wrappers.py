@@ -6,14 +6,14 @@ from typing import SupportsFloat
 
 class MaxAndSkipEnv(Wrapper):
     def __init__(self, env: Env ,frame_skip:int =4):
-        # super().__init__(env)
+        super().__init__(env)
         self._frame_skip = frame_skip
         self._obs = np.zeros((2,*env.observation_space.shape),dtype=env.observation_space.dtype)
     def step(self, action: int):
 
         total_reward = 0
         for i in range(self._frame_skip):
-            obs,r,terminated,truncated,info = self.env.step(action)
+            obs,r,terminated,truncated,info = self.get_wrapper_attr('env').step(action)
             if self._frame_skip - (i+1) == 0:
                 self._obs[0] = obs
             if self._frame_skip - (i+1) == 1:
@@ -40,10 +40,10 @@ class EpisodicLifeEnv(Wrapper):
         self.was_real_done: True
 
     def step(self, action:int):
-        obs,reward,terminated,truncated,info = self.env.step(action)
+        obs,reward,terminated,truncated,info = self.get_wrapper_attr('env').step(action)
         self.was_real_done = terminated or truncated
 
-        lives = self.env.unwrapped.ale.lives()
+        lives = self.unwrapped.ale.lives()
         if 0<lives < self.lives:
             terminated = True
         self.lives = lives
@@ -53,13 +53,13 @@ class EpisodicLifeEnv(Wrapper):
     def reset(self, **kwargs):
 
         if self.was_real_done:
-            obs,info = self.env.reset(**kwargs)
+            obs,info = self.get_wrapper_attr('env').reset(**kwargs)
         else:
-            obs,_,terminated,truncated,info = self.env.step(0)
+            obs,_,terminated,truncated,info = self.get_wrapper_attr('env').step(0)
             done = terminated or truncated
             if done:
-                obs,info = self.env.reset(**kwargs)
-        self.lives = self.env.unwrapped.ale.lives()
+                obs,info = self.get_wrapper_attr('env').reset(**kwargs)
+        self.lives = self.unwrapped.ale.lives()
         return obs,info
 
 class NoopResetEnv(Wrapper):
@@ -73,9 +73,9 @@ class NoopResetEnv(Wrapper):
         obs = np.zeros(0)
         info:dict = {} # au cas ou noops =0
         for _ in range(noop):
-            obs,_,terminated,truncated,info = self.env.step(0)
+            obs,_,terminated,truncated,info = self.get_wrapper_attr('env').step(0)
             if terminated or truncated:
-                obs,info = self.env.reset(**kwargs)
+                obs,info = self.get_wrapper_attr('env').reset(**kwargs)
         return obs,info
 
 
@@ -84,13 +84,13 @@ class FireResetEnv(Wrapper):
         super().__init__(env)
     
     def reset(self, **kwargs):
-        obs,info = self.env.reset()
-        obs,_,terminated,truncated,info = self.env.step(1) #firring
+        obs,info = self.get_wrapper_attr('env').reset()
+        obs,_,terminated,truncated,info = self.get_wrapper_attr('env').step(1) #firring
         if terminated or truncated:
-            obs,info = self.env.reset()
-        obs,_,terminated,truncated,info = self.env.step(2) # pour gérer les jeux ou il faut deux actions 
+            obs,info = self.get_wrapper_attr('env').reset()
+        obs,_,terminated,truncated,info = self.get_wrapper_attr('env').step(2) # pour gérer les jeux ou il faut deux actions 
         if terminated or truncated:
-            obs,info = self.env.reset()
+            obs,info = self.get_wrapper_attr('env').reset()
 
         return obs, {} 
 
@@ -103,7 +103,7 @@ class WarpEnv(ObservationWrapper):
             low=0,
             high=255,
             shape=(self.height, self.width, 1),
-            dtype=env.observation_space.dtype,  # type: ignore[arg-type]
+            dtype=self.unwrapped.observation_space.dtype,  # type: ignore[arg-type]
         )
 
     def observation(self, observation):
