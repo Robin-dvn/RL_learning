@@ -1,2 +1,3 @@
 .venv/
 src/wandb/
+src/DQN_atari/wandb
