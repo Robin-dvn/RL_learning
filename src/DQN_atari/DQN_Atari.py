@@ -153,6 +153,7 @@ for frame in tqdm(range(NB_FRAME_TRAIN)):
         stacked_obs = phi(last_m_images,AGENT_HISTORY_LENGTH)
         a = online_net.act(stacked_obs)
     
+    
     new_obs,r,ter,trun,info = env.step(a)
     cumul_reward+=r
     if r >0 : r = 1
