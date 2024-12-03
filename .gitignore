@@ -3,3 +3,4 @@ src/wandb/
 src/DQN_atari/wandb
 src/DQN_atari/__pycache__
 src/DQN_atari/wandb
+src\DQN_atari\__pycache__

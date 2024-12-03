@@ -33,12 +33,12 @@ class Qnetwort(nn.Module):
         action = max_q_index.detach().item()
         return action
 
-env = gym.make('ALE/Breakout-v5',render_mode = "human")
+env = gym.make('BreakoutNoFrameskip-v4',render_mode = "human",repeat_action_probability = 0)
 qNet = Qnetwort(env)
-qNet.load_state_dict(torch.load("Qnetworkstatedict.pth",map_location=torch.device('cpu'),weights_only=True))
+qNet.load_state_dict(torch.load("qnetparameters.pth",map_location=torch.device('cpu'),weights_only=True))
 last_m_images = deque(maxlen=5)
 obs,info = env.reset()
-for _ in range(1000):
+for _ in range(10000):
     while len(last_m_images) <= 4:
         a = env.action_space.sample()
         obs,r,ter,trun,info = env.step(a)

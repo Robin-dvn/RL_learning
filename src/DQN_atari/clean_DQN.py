@@ -27,18 +27,18 @@ gym.register_envs(ale_py)
 
 
 NB_VEC_ENVS = 1
-MIN_BUFFER_SIZE = 10000
-REPLAY_BUFFER_SIZE = 20000
+MIN_BUFFER_SIZE =  80000
+REPLAY_BUFFER_SIZE = 100000
 BATCH_SIZE = 32
-TARGET_UPDATE_FREQUENCY = 2000
+TARGET_UPDATE_FREQUENCY = 10000
 UPDATE_FREQUENCY = 4
 GAMMA = 0.99
 LR = 0.0001
 EPS_START = 1
 EPS_END = 0.1
-EPS_MAX_FRAME = 100000
+EPS_MAX_FRAME = 1000000
 NOOP_MAX = 30
-NB_FRAME_TRAIN = 30000
+NB_FRAME_TRAIN = 4000000
 
 class Qnetwort(nn.Module):
     def __init__(self, env: gym.Env):
@@ -159,7 +159,7 @@ if __name__ == "__main__":
             if frame % TARGET_UPDATE_FREQUENCY == 0 :
                 target_net.load_state_dict(online_net.state_dict())
         
-
+    torch.save(online_net.state_dict(),"qnetparameters.pth")
     process = psutil.Process(os.getpid())
     print(f"RAM utilisée après remplissage du buffer : {process.memory_info().rss / 1e9} GB")
 
