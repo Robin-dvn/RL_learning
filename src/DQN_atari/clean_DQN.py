@@ -38,7 +38,7 @@ EPS_START = 1
 EPS_END = 0.1
 EPS_MAX_FRAME = 1000000
 NOOP_MAX = 30
-NB_FRAME_TRAIN = 4000000
+NB_FRAME_TRAIN = 10000000
 
 class Qnetwort(nn.Module):
     def __init__(self, env: gym.Env):
@@ -159,7 +159,7 @@ if __name__ == "__main__":
             if frame % TARGET_UPDATE_FREQUENCY == 0 :
                 target_net.load_state_dict(online_net.state_dict())
         
-    torch.save(online_net.state_dict(),"qnetparameters.pth")
+    torch.save(online_net.state_dict(),"qnetparameters10M.pth")
     process = psutil.Process(os.getpid())
     print(f"RAM utilisée après remplissage du buffer : {process.memory_info().rss / 1e9} GB")
 
